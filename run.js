@@ -14,6 +14,8 @@ setTimeout(function(){
     var box = document.querySelector('div.hdtb-mn-cont');
     var select = document.createElement('select');
     select.innerHTML = [
+        '<option value="">下拉选择高级搜索</option>',
+        '<option value="~">近义检索</option>',
         '<option value="allinanchor:"   >内链 & inanchor</option>',
         '<option value="inanchor:"      >内链 | inanchor</option>',
         '<option value="allintext:"     >页面 & intext</option>',
@@ -41,7 +43,12 @@ setTimeout(function(){
     select.onchange = function(){
         var inputq = document.querySelector('input[name=q]');
         var content = inputq.value;
-        inputq.value = this.value + ' ' + content.replace(/(site:\w+\.(com|org|cn)|(allinanchor|inanchor|allintext|intext|allintitle|intitle|allinurl|inurl):|filetype:\w+)/, '');
+        var contrim = content.replace(/(~+|site:\w+\.(com|org|cn)|(allinanchor|inanchor|allintext|intext|allintitle|intitle|allinurl|inurl):|filetype:\w+)/, '').replace(/\s+/, '');
+        if( this.value == '~' ){
+            inputq.value = this.value+contrim;
+        }else{
+            inputq.value = this.value + ' ' + contrim;
+        }
         if( content.length >= 1 ){
             formq.submit();
         }
